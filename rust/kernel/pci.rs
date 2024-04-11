@@ -100,9 +100,9 @@ impl Device {
     }
 }
 
-unsafe impl device::RawDevice for Device {
-    fn raw_device(&self) -> *mut bindings::device {
+impl AsRef<device::Device> for Device {
+    fn as_ref(&self) -> &device::Device {
         // SAFETY: By the type invariants, we know that `self.ptr` is non-null and valid.
-        unsafe { &mut (*self.ptr).dev }
+        unsafe { device::Device::from_raw(&mut (*self.ptr).dev) }
     }
 }
